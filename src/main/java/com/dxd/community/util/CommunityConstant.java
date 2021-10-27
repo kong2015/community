@@ -31,8 +31,26 @@ public interface CommunityConstant {
     String TOPIC_COMMENT = "comment";
     String TOPIC_LIKE = "like";
     String TOPIC_FOLLOW = "follow";
+    String TOPIC_PUBLISH = "publish";
+    String TOPIC_DELETE = "delete";
+    String TOPIC_SHARE = "share";
 
     int SYSTEM_USER_ID = 1;
+
+    /**
+     * 权限: 普通用户,数据库对应type  0
+     */
+    String AUTHORITY_USER = "user";
+
+    /**
+     * 权限: 管理员,数据库对应type  1
+     */
+    String AUTHORITY_ADMIN = "admin";
+
+    /**
+     * 权限: 版主,数据库对应type  2
+     */
+    String AUTHORITY_MODERATOR = "moderator";
 
 
 }

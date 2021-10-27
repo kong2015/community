@@ -15,6 +15,6 @@ public class LoginTicket {
     private int id;
     private int userId;
     private String ticket;
-    private int status;//0表示 1表示
+    private int status;//0表示有效 1表示
     private Date expired;
 }

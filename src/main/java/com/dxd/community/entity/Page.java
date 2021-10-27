@@ -7,7 +7,7 @@ package com.dxd.community.entity;
 
 public class Page {
     private int current = 1;
-    private int limit = 1;
+    private int limit = 2;
     private int rows;
     private String path;
 

@@ -23,6 +23,7 @@ public class LikeService {
 
     // 点赞
     // th:onclick="|like(this,2,${cvo.comment.id},${cvo.comment.userId},${post.id});|"
+    //下面是事务操作
     public void like(int userId, int entityType, int entityId, int entityUserId) {
         redisTemplate.execute(new SessionCallback() {
             @Override
@@ -32,12 +33,12 @@ public class LikeService {
 
                 boolean isMember = operations.opsForSet().isMember(entityLikeKey, userId);
                 operations.multi();
-                if (isMember) {
+                if (isMember){
                     operations.opsForSet().remove(entityLikeKey, userId);
                     operations.opsForValue().decrement(userLikeKey);
                     System.out.println(userLikeKey);
                     System.out.println(redisTemplate.opsForValue().get(userLikeKey));;//当为2时候输出为null
-                } else {
+                }else {
                     operations.opsForSet().add(entityLikeKey, userId);
                     operations.opsForValue().increment(userLikeKey);
                     System.out.println(userLikeKey);

@@ -18,7 +18,6 @@ import java.io.PrintWriter;
 @Slf4j
 @ControllerAdvice(annotations = Controller.class)
 public class ExceptionAdvice {
-
     @ExceptionHandler({Exception.class})
     public void handlerException(Exception e, HttpServletResponse response, HttpServletRequest request) throws IOException {
         //打印在日志上
@@ -34,7 +33,7 @@ public class ExceptionAdvice {
             response.setContentType("application/plain; charset=utf-8");
             PrintWriter writer = response.getWriter();
             writer.write(CommunityUtil.getJSONString(1, "服务器异常"));
-        }else {
+        }else{
             response.sendRedirect(request.getContextPath() + "/error");
         }
     }

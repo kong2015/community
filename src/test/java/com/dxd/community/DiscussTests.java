@@ -30,7 +30,7 @@ public class DiscussTests {
 
     @Test
     public void testselectDiscussPosts(){
-        List<DiscussPost> discussPosts = discussPostMapper.selectDiscussPosts(2, 0, 1);
+        List<DiscussPost> discussPosts = discussPostMapper.selectDiscussPosts(2, 0, 1, 0);
         for (DiscussPost discussPost : discussPosts) {
             System.out.println("discussPost = " + discussPost);            
         }

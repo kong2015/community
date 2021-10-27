@@ -1,6 +1,5 @@
 package com.dxd.community.controller;
 
-import com.dxd.community.dao.CommentMapper;
 import com.dxd.community.entity.Comment;
 import com.dxd.community.entity.DiscussPost;
 import com.dxd.community.entity.Event;
@@ -9,12 +8,13 @@ import com.dxd.community.service.CommentService;
 import com.dxd.community.service.DiscussPostService;
 import com.dxd.community.util.CommunityConstant;
 import com.dxd.community.util.HostHolder;
+import com.dxd.community.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.DispatcherServlet;
 
 import java.util.Date;
 
@@ -34,6 +34,9 @@ public class CommentController implements CommunityConstant {
 
     @Autowired
     private HostHolder hostHolder;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @RequestMapping(value = "/add/{discussPostId}", method = RequestMethod.POST)
     public String addComment(@PathVariable("discussPostId") int discussPostId, Comment comment){
@@ -57,6 +60,20 @@ public class CommentController implements CommunityConstant {
             event.setEntityUserId(target.getUserId());
         }
         eventProducer.fireEvent(event);
+
+        if (comment.getEntityType() == ENTITY_TYPE_POST) {
+            // 触发发帖事件
+            event = new Event()
+                    .setTopic(TOPIC_PUBLISH)
+                    .setUserId(comment.getUserId())
+                    .setEntityType(ENTITY_TYPE_POST)
+                    .setEntityId(discussPostId);
+            eventProducer.fireEvent(event);
+
+            // 计算帖子的分数
+            String redisKey = RedisKeyUtil.getPostScoreKey();
+            redisTemplate.opsForSet().add(redisKey, discussPostId);
+        }
 
         return "redirect:/discuss/detail/" + discussPostId;
     }

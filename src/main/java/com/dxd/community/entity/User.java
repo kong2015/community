@@ -13,7 +13,7 @@ public class User {
     private String password;
     private String salt;
     private String email;
-    //0-普通用户    1-版主    2-管理员
+    //0-普通用户    1-管理员    2-版主
     private int type;
     private int status;
     private String activationCode;

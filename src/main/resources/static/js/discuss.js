@@ -1,3 +1,5 @@
+// 页面加载完成（html标签）以后，js得到标签，为他动态绑定一个事件
+// 相当于window.onload = function
 $(function(){
     $("#topBtn").click(setTop);
     $("#wonderfulBtn").click(setWonderful);
@@ -96,6 +98,7 @@ function setDelete() {
         function(data) {
             data = $.parseJSON(data);
             if(data.code == 0) {
+                //跳转到首页
                 location.href = CONTEXT_PATH + "/index";
             } else {
                 alert(data.msg);
